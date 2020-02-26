@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picast House</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type= "text/css" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" type= "text/css" href="{% static '/css/res.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Sofia" rel='stylesheet'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+    {% for item in socks %}
+    .{{item.name}}{
+        {% comment %} background-image: url('/static/images/{{item.name}}.jpg'); {% endcomment %}
+        background-image: url('static/{{item.image.url}}');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 500px;
+    }
+    {% endfor %}
+    </style>
+</head>
+<body>
+    <div class ="container-fluid head ">  
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row first">
+                        <div class="column">
+                            <img src="{% static '/images/vo2.jpg' %}" alt="picast" style="width:100%;">   
+                        </div>
+                        <div class="column">
+                            <img src="{% static '/images/vo1.jpg' %}" alt="picast" style="width:100%;" >   
+                        </div>
+                        <div class="column">
+                            <img src="{% static '/images/vo3.jpg' %}" alt="picast" style="width:100%;">   
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="row first">
+                        <div class="column">
+                            <img src="{% static '/images/vo4.jpg' %}" alt="picast" style="width:100%;">   
+                        </div>
+                        <div class="column">
+                            <img src="{% static '/images/vo5.jpg' %}" alt="picast" style="width:100%;" >   
+                        </div>
+                        <div class="column">
+                            <img src="{% static '/images/vo6.jpg' %}" alt="picast" style="width:100%;">   
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="row first">
+                        <div class="column">
+                            <img src="{% static '/images/vo7.jpg' %}" alt="picast" style="width:100%;">   
+                        </div>
+                        <div class="column">
+                            <img src="{% static '/images/vo8.jpg' %}" alt="picast" style="width:100%;" >   
+                        </div>
+                        <div class="column">
+                            <img src="{% static '/images/vo9.jpg' %}" alt="picast" style="width:100%;">   
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class = "navbar">   
+        <div class="navbar-header">
+            <a class="navbar-brand nav-link" href="{% url 'index' %}">
+                <img class="logo" src="{% static '/images/picast.jpg'%}" alt="" width="50" height="50"> 
+            </a>
+        </div>
+        <ul class= "nav justify-content-center">
+            <li class="nav-item"> <a href="{% url 'short' %}" class="nav-link">Tất Ngắn</a> </li>
+            <li class="nav-item"> <a href="{% url 'long' %}" class="nav-link">Tất Dài</a> </li>
+        </ul>
+    </div>
+    <br style="clear: both;" />
+    <div class="product">
+        <div class="container bg-grey">
+            <h3 class="text-center"> Sản Phẩm Vớ Dài </h3>
+            <div class="up">
+                <div class="row text-center">
+                    <div class="col-sm-3 option">
+                    <h3> Lựa Chọn Sản Phẩm  </h3>
+                    <hr/>
+                    <label for="cars">Sắp xếp theo:</label>
+                    <form action="{% url 'long' %}" method="post">
+                        {% csrf_token %} 
+                        <ul>
+                            <li> <input type="radio" value="giam" name="choice"> Giá Giảm </li>
+                            <li> <input type="radio" value="tang" name="choice"> Giá Tăng </li>
+                            <p><input type="submit" value="Chọn"></p>
+                        </ul>
+                    </form>
+                    </div>
+                    <div class="col-sm-9">
+                        {% if sortresult == "giam" %}
+                            {% for item in socks%}
+                                {% if item.isShort == False%}
+                                    <div class="col-sm-3 {{item.name}}">
+                                        <div class="thumbnail">
+                                            <p><strong>{{item.title}}</strong></p>
+                                            <p>Giá: {{item.price}} Đồng</p>
+                                            <button class="btn"> Mua Ngay</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if sortresult == "chua" %}
+                            {% for item in socks%}
+                                {% if item.isShort == False%}
+                                    <div class="col-sm-3 {{item.name}}">
+                                        <div class="thumbnail">
+                                            <p><strong>{{item.title}}</strong></p>
+                                            <p>Giá: {{item.price}} Đồng</p>
+                                            <button class="btn"> Mua Ngay</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if sortresult == "tang" %}
+                            {% for item in socks %}
+                                {% if item.isShort == False%}
+                                    <div class="col-sm-3 {{item.name}}">
+                                        <div class="thumbnail">
+                                            <p><strong>{{item.title}}</strong></p>
+                                            <p>Giá: {{item.price}} Đồng</p>
+                                            <button class="btn"> Mua Ngay</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <br/>
+            {% comment %} <div class="row text-center">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <button class="loadbtn"> Xem Thêm </button>
+                </div>
+                <div class="col-sm-4"></div>
+            </div> {% endcomment %}
+            {% comment %} <hr/> {% endcomment %}
+            {% comment %} <h3 class="text-center">Sản Phẩm Mới</h3>
+            <div class="up">
+                <div class="row text-center">
+                    {% for item in socks %}
+                        {% if item.isNew == True%}
+                            <div class="col-sm-4 {{item.name}}">
+                                <div class="thumbnail">
+                                    <p><strong>{{item.title}}</strong></p>
+                                    <p>Giá: {{item.price}} Đồng </p>
+                                    <button class="btn"> Mua ngay</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div> {% endcomment %}
+            <br/>
+            {% comment %} <div class="row text-center">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <button class="loadbtn"> Xem Thêm </button>
+                </div>
+                <div class="col-sm-4"></div>
+            </div> {% endcomment %}
+        </div>
+    </div>
+    <hr/>
+    <div id="contact" class="container-fluid bg-grey">
+        <h2 class="text-center">Đặt Hàng Ngay</h2>
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Địa Chỉ</p>
+                <p><span class="glyphicon glyphicon-map-marker"></span> Quận 3</p>
+                <p><span class="glyphicon glyphicon-phone-alt"></span> 0905724256 </p>
+                <p><span class="glyphicon glyphicon-envelope"></span> picasthouse@gmail.com </p>
+            </div>
+            <div class="col-sm-6">
+                <div class="right">
+                    <p>Liên Hệ Ngay</p>
+                    <p><span class="fa fa-facebook-square"></span> facebook.com/cauberungxanh</p>
+                    <p><span class="fa fa-instagram"></span> datdeptraikhoaitonhuloxo </p>
+                    <p><span class="glyphicon glyphicon-phone"></span> Zalo:0905724256 </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
