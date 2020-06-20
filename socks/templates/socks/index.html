@@ -17,8 +17,9 @@
     <style>
     {% for item in socks %}
     .{{item.name}}{
-        {% comment %} background-image: url('/static/images/{{item.name}}.jpg'); {% endcomment %}
+        {% if item.image %}
         background-image: url('static/{{item.image.url}}');
+        {% endif %}
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
